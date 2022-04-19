@@ -1,0 +1,150 @@
+Oracle port : 1521 , 8080
+pass : 1234
+
+port : 데이터가 OSL 7Layer에서 Application Layer에서 전송받는 통로
+1~65,535 포트 존재
+TCP : 신뢰성 있는 전송 >< UDP : 신뢰성 없는 전송
+Well Known 포트
+ : 1~1024 포트
+	TCP 21 : FTP
+	TCP 22 : SSH
+	TCP 23 : Telnet
+	TCP 53 : DNS(영역전송)
+	UDP 53 : DNS(이름풀이)
+	TCP 80 : WebServer (www)
+	TCP 110 : POP3
+	TCP 443 : SSL(Https)
+1024까지는 이미 지정되어 있음
+
+	Oracle Database Listener : TCP 1521 
+	Oracle HTTP Listener : 8080
+		//아파치 톰캣 8080과 겹침
+	MS-SQL : TCP 1433
+	MySQL : TCP 3306
+
+시스템 계정 활성화
+ - sys : 최고 관리자(Super user)
+ - system : 오라클을 관리 할 수 있는 계정, DB 생성 권한은 없다
+ - scott : 비활성화 되어있음 <처음 사용자를 위해서 쿼리 배움>
+ - hr : 비활성화 되어있음 <처음 사용자를 위해서 쿼리 배움> <= Express edition에서 사용 가능
+
+Windows 방화벽 세팅
+ - wf.msc : 고급 방화벽 (더 세밀하게 세팅) 
+ 1. 인바운드 규칙 => 2. 새규칙 => 3. 포트 => 4. TCP 1521 => 5. 연결허용 => 6. 도메인, 개인, 공용 모두 체크
+=> 7. 이름 : Oracle_TCP_1521
+
+ - firewall.cpl : 기본 방화벽
+
+오라클 관리 툴
+ - TUI 관리툴 : SQLPlus, 간단한게 사용. Oracle 처음 설치 시 sample(Scott, hr)
+ - GUI 관리툴 : SQL Developer, 쿼리를 저장 할 수 있고, 편리하게 사용
+
+시스템 계정 활성화. (hr) (SQLPlus)
+connect sys/1234 as sysdba : sys계정 암호1234로 최고 관리자 계정으로 oracle 접속
+alter user hr identified by hr account unlock; : hr 계정을 수정하고 암호는 hr으로 할당하고 락을 해제
+connect hr/hr
+
+Create table abc( a number not null, b number null); : 테이블 생성
+inswert into abc(1,2); : 테이블에 값을 넣기
+select * from abc : 테이블의 내용 출력
+
+
+실습 환경 세팅 -  WS2019 vm에서
+1. Oracle 11g Express Edition R2 설치
+2. hr계정의 lock 해제
+3. sqp developer 실행
+4. EMP_EXAPLE.sql 실행, 3테이블의 내용 확인
+Pa55w.rd
+2:45 까지
+
+==================
+MS-SQL
+
+인스턴스 : 물리적인 서버장비에 MS-SQL(논리적 설치)
+	- 기본인스턴스 : 제일 처음 설치(MSSQLSERVER)
+	- 명명인스턴스 : 두번째 설치부터는 직접 인스턴스 이름을 넣어서 설치
+
+1. 인스턴스 기능 설치 : 서버 서비스 , 각각의 인스턴스 마다 설치(Server Service)
+	- 데이터베이스 엔진 서비스
+ 공유 기능 설치 : 모든 인스턴스에서 공유되는 기능 설치 (Client 도구)
+	- 클라이언트 도구 연결, 클라이언트 도구 이전 버젼과의 호환성, 클라이언트 도구SDK
+	, SQL 클라이언트 연결SDK
+
+2. 인증 모드
+  - Windows 인증모드 ( 보안이 강하다, 회사 내부에서만 접근, 원격 불가)
+  - 혼합모드 (Windows 인증 + SQL인증) : 실무에서 사용
+	sa : 최고 관리자 계정(System Administrator) : 1234
+	<<현재사용자 추가>> 까먹으면안됨
+
+
+========================
+MySQL
+
+사용 포트 : TCP 3306
+
+최고 사용자계정 : root : 1234
+
+방화벽 세팅
+ - MS-SQL : TCP 1433
+ - My-SQL : TCP 3306
+
+vm에 
+1. MS-SQL설치, SSMS 설치
+2. My-SQL 설치, Developer default 설치(MySQL Server, 워크밴치
+
+주의 : 한글 언어팩 설치, 보안이 강하다
+	암호정책이 강력한편 : gpedit.msc 에서 변경 가능
+
+
+Client <=================================>Server
+SQLDeveloper					Oracle Server(TCP 1521)
+SSMS(SQL Server MAnagement Studio)		MS-SQL Server(TCP 1433)
+WorkBench					MySQL Server(TCP 3306)
+
+1. DataBase(XE) : 데이터(정보)를 저장
+  - 테이블(데이터를 저장), 인덱스, 뷰, 저장프로시져, 함수, 트리거, 시퀀스 <== 객체(Object)
+
+2. DBMS(DataBase Management system)
+ - Oracle, Sybase, Infomix, MSSQL, MySQL ...  <== Windows Server, Linux, Unix < == Server OS 설치
+ - CPU, RAM 을 Server 리소스에 사용
+ - 보안(계정)
+ - 트랜잭션 처리
+
+Excel : 개인용 DB
+
+3. R-DBMS(관계형 DBMS) : 데이터베이스의 테이블은 모델링( 중복제거, 성능향상 ) 되어있다
+	- 테이블과 테이블은 관계를 맺고 있다. 테이블의 Join을 통해 검색
+
+4. Query : 질의
+     : 구화화된 질의
+
+5. SQL 종류
+ - DDL : 데이터 정의 언어 ( 객체를 생성, 수정, 삭제 ) : Create, Alter, Drop
+ - DML : 데이터 조작 언어 ( 레코드(로우)를 생성, 수정, 삭제 ) : insert, update, delete
+ - DCL : 데이터 컨트롤 언어 ( 계정의 권한을 부여, 제거 ) : Grant, Invoke, deny
+ - DQL : 데이터 검색 언어 : Select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

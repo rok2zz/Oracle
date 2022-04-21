@@ -14,7 +14,7 @@ select ename, dno from employee where eno = 7788;
 select ename, salary from employee where salary<2000 or salary>3000;
 
 -- 6. 1981년 2월 20일부터 81년 5월 1일 사이의 입사한 사원의 이름 담당업무, 입사일을 출력하시오
-
+select ename, job, hiredate from employee where hiredate between '1981/2/20' and '1981/5/1';
 
 -- 7. 부서번호가 20및 30에 속한 사원의 이름과 부서번호를 출력하되 이름을 기준(내림차순)으로 출력하시오. 
 select ename, dno from employee where dno=20 or dno=30 order by ename desc;

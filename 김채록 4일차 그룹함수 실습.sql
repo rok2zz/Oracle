@@ -15,7 +15,7 @@ from employee
 group by job;
 
 -- 4. 관리자 수를 나열 하시오. 컬럼의 별칭은 "관리자수" 로 나열 하시오. 
-select count(manager) as 관리자수
+select count(distinct manager) as 관리자수
 from employee;
 
 -- 5. 급여 최고액, 최저 급여액의 차액을 출력 하시오, 컬럼의 별칭은 "DIFFERENCE"로 지정하시오. 

@@ -39,8 +39,21 @@ where username in ('HR', 'USERTEST01');
 
 -- 계정에게 테이블 스페이스 변경(SYSTEM >> USERS) 
 alter user usertest01
-default tablespace users
-temporary tablespace temp;
+default tablespace users -- DataFile 저장 : 객체가 저장되는 공간
+temporary tablespace temp; -- Log를 저장 : DML (Insert ,Update, delete)
+                           -- Log를 호칭할때 Transaction Log
+
+-- 테이블 스페이스 : 객체의 log를 저장하는 물리적인 파일
+    -- DataFile : 객체를 저장
+    -- Log : Transaction Log 저장
+    
+    -- DataFile과 Log 파일은 물리적으로 다른 공간에 저장해야성능을 높일 수 있다
+        -- RAID 된 공간에 저장하면 성능을 높일 수 있다.
+
+
+
+
+
 
 -- 계정에게 Users 테이블 스페이스를 사용할 공간 할당
 alter user usertest01
@@ -48,7 +61,7 @@ quota 2m on users;
 
 -- ------------------------------
 -- 문제 : usertest02 생성 후 users 테이블 스페이스에서 테이블(tbl2) 생성후 insert
-
+GRANT CREATE TABLE TO USERTEST03;
 
 
 

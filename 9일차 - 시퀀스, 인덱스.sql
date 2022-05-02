@@ -240,13 +240,51 @@ drop index idx_emp_copy91_allsal;
     -- 각 사용자별로 계정을 생성, DBMS에 접속할 수 있는 사용자 생성
         (인증 (Authentication : Credential (Identity + password)) 확인
         (허가 (Authorization : 인증된 사용자에게 Oracle의 시스템 권한, 객체( 테이블, 뷰, 트리거, 함수) 권한
-            - System privileges : 오라클의 전반적인 권한
+            - System privileges : 오라클의 전반적인 권한, 테이블 스페이스 내에서의 권한
             - Object privileges : 테이블, 뷰, 트리거, 함수, 저장프로시저, 시퀀스, 인덱스 접근 권한
 */
 
 -- Oracle 에서 계정 생성 (일반 계정에서는 계정 생성 권한이 없다.) 
 show user;
 create user usertest01 identified by 1234;
+
+-- Object privileges : 테이블, 뷰, 트리거, 함수, 저장프로시저, 시퀀스, 인덱스에 부여되는 권한 할당
+    -- 객체에 권한 할당
+====================================================================
+   권한      Table       view        SEQUENCE        PROCEDEUR
+--------------------------------------------------------------------
+  Alter       O                         O
+  Delete      O           O
+  EXECUTE                                               O
+  INDEX       O
+  INSERT      O           O
+  REFERENCES  O
+  SELECT      O           O             O
+  UPDATE      O           O
+
+-- 특정 테이블에 Select 권한 부여하기
+create user user_test10 indentified by 1234;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
